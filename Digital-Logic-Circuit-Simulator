@@ -1,6 +1,10 @@
 #include <stdio.h>
 
-/* ================= LOGIC GATE FUNCTIONS ================= */
+/* =====================================================
+   DIGITAL LOGIC CIRCUIT SIMULATOR
+   ===================================================== */
+
+/* ================= LOGIC GATES ================= */
 
 int AND(int a, int b)
 {
@@ -37,6 +41,7 @@ int XNOR(int a, int b)
     return !(a ^ b);
 }
 
+
 /* ================= HALF ADDER ================= */
 
 void halfAdder(int a, int b)
@@ -47,11 +52,108 @@ void halfAdder(int a, int b)
     carry = a & b;
 
     printf("\n--- HALF ADDER ---\n");
-    printf("A = %d\n", a);
-    printf("B = %d\n", b);
-    printf("Sum   = %d\n", sum);
-    printf("Carry = %d\n", carry);
+    printf("A       = %d\n", a);
+    printf("B       = %d\n", b);
+    printf("Sum     = %d\n", sum);
+    printf("Carry   = %d\n", carry);
 }
+
+
+/* ================= FULL ADDER ================= */
+
+void fullAdder(int a, int b, int cin)
+{
+    int sum, carry;
+
+    sum = a ^ b ^ cin;
+    carry = (a & b) | (b & cin) | (a & cin);
+
+    printf("\n--- FULL ADDER ---\n");
+    printf("A         = %d\n", a);
+    printf("B         = %d\n", b);
+    printf("Carry In  = %d\n", cin);
+    printf("Sum       = %d\n", sum);
+    printf("Carry Out = %d\n", carry);
+}
+
+
+/* ================= HALF SUBTRACTOR ================= */
+
+void halfSubtractor(int a, int b)
+{
+    int difference, borrow;
+
+    difference = a ^ b;
+    borrow = (!a) & b;
+
+    printf("\n--- HALF SUBTRACTOR ---\n");
+    printf("A          = %d\n", a);
+    printf("B          = %d\n", b);
+    printf("Difference = %d\n", difference);
+    printf("Borrow     = %d\n", borrow);
+}
+
+
+/* ================= FULL SUBTRACTOR ================= */
+
+void fullSubtractor(int a, int b, int bin)
+{
+    int difference, borrow;
+
+    difference = a ^ b ^ bin;
+    borrow = ((!a) & b) | ((!a) & bin) | (b & bin);
+
+    printf("\n--- FULL SUBTRACTOR ---\n");
+    printf("A          = %d\n", a);
+    printf("B          = %d\n", b);
+    printf("Borrow In  = %d\n", bin);
+    printf("Difference = %d\n", difference);
+    printf("Borrow Out = %d\n", borrow);
+}
+
+
+/* ================= 4-BIT ADDER ================= */
+
+void fourBitAdder()
+{
+    int a[4], b[4];
+    int sum[4];
+    int carry = 0;
+    int i;
+
+    printf("\n--- 4-BIT BINARY ADDER ---\n");
+
+    printf("Enter 4 bits for A (MSB to LSB): ");
+    for (i = 0; i < 4; i++)
+        scanf("%d", &a[i]);
+
+    printf("Enter 4 bits for B (MSB to LSB): ");
+    for (i = 0; i < 4; i++)
+        scanf("%d", &b[i]);
+
+    for (i = 3; i >= 0; i--)
+    {
+        sum[i] = a[i] ^ b[i] ^ carry;
+        carry = (a[i] & b[i]) |
+                (b[i] & carry) |
+                (a[i] & carry);
+    }
+
+    printf("\nA   = ");
+    for (i = 0; i < 4; i++)
+        printf("%d", a[i]);
+
+    printf("\nB   = ");
+    for (i = 0; i < 4; i++)
+        printf("%d", b[i]);
+
+    printf("\nSum = ");
+    for (i = 0; i < 4; i++)
+        printf("%d", sum[i]);
+
+    printf("\nCarry Out = %d\n", carry);
+}
+
 
 /* ================= TRUTH TABLES ================= */
 
@@ -59,9 +161,9 @@ void displayTruthTables()
 {
     int a, b;
 
-    printf("\n========================================");
-    printf("\n          LOGIC GATE TRUTH TABLES");
-    printf("\n========================================\n");
+    printf("\n==============================================");
+    printf("\n              LOGIC GATE TRUTH TABLES");
+    printf("\n==============================================\n");
 
     printf("\nA B | AND OR NAND NOR XOR XNOR\n");
     printf("--------------------------------\n");
@@ -81,8 +183,8 @@ void displayTruthTables()
         }
     }
 
-    printf("\nNOT Gate Truth Table\n");
-    printf("-------------------\n");
+    printf("\nNOT Gate\n");
+    printf("--------\n");
     printf("A | NOT\n");
     printf("--------\n");
 
@@ -91,8 +193,8 @@ void displayTruthTables()
         printf("%d |  %d\n", a, NOT(a));
     }
 
-    printf("\nHalf Adder Truth Table\n");
-    printf("----------------------\n");
+    printf("\nHalf Adder\n");
+    printf("----------------\n");
     printf("A B | Sum Carry\n");
     printf("----------------\n");
 
@@ -102,25 +204,91 @@ void displayTruthTables()
         {
             printf("%d %d |  %d    %d\n",
                    a, b,
-                   XOR(a, b),
-                   AND(a, b));
+                   a ^ b,
+                   a & b);
+        }
+    }
+
+    printf("\nFull Adder\n");
+    printf("------------------------\n");
+    printf("A B Cin | Sum Carry\n");
+    printf("------------------------\n");
+
+    {
+        int cin;
+
+        for (a = 0; a <= 1; a++)
+        {
+            for (b = 0; b <= 1; b++)
+            {
+                for (cin = 0; cin <= 1; cin++)
+                {
+                    printf("%d %d  %d  |  %d    %d\n",
+                           a, b, cin,
+                           a ^ b ^ cin,
+                           (a & b) | (b & cin) | (a & cin));
+                }
+            }
+        }
+    }
+
+    printf("\nHalf Subtractor\n");
+    printf("--------------------\n");
+    printf("A B | Difference Borrow\n");
+    printf("--------------------\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d |     %d        %d\n",
+                   a, b,
+                   a ^ b,
+                   (!a) & b);
+        }
+    }
+
+    printf("\nFull Subtractor\n");
+    printf("-----------------------------\n");
+    printf("A B Bin | Difference Borrow\n");
+    printf("-----------------------------\n");
+
+    {
+        int bin;
+
+        for (a = 0; a <= 1; a++)
+        {
+            for (b = 0; b <= 1; b++)
+            {
+                for (bin = 0; bin <= 1; bin++)
+                {
+                    printf("%d %d  %d  |     %d        %d\n",
+                           a, b, bin,
+                           a ^ b ^ bin,
+                           ((!a) & b) |
+                           ((!a) & bin) |
+                           (b & bin));
+                }
+            }
         }
     }
 }
+
 
 /* ================= MAIN PROGRAM ================= */
 
 int main()
 {
     int choice;
-    int a, b;
+    int a, b, cin, bin;
 
     while (1)
     {
-        printf("\n\n========================================");
-        printf("\n       DIGITAL LOGIC CIRCUIT SIMULATOR");
-        printf("\n========================================");
+        printf("\n\n==============================================");
+        printf("\n        DIGITAL LOGIC CIRCUIT SIMULATOR");
+        printf("\n==============================================");
 
+        printf("\n\n--- LOGIC GATES ---");
         printf("\n1. AND Gate");
         printf("\n2. OR Gate");
         printf("\n3. NOT Gate");
@@ -128,14 +296,22 @@ int main()
         printf("\n5. NOR Gate");
         printf("\n6. XOR Gate");
         printf("\n7. XNOR Gate");
+
+        printf("\n\n--- ADDERS & SUBTRACTORS ---");
         printf("\n8. Display All Truth Tables");
         printf("\n9. Half Adder");
-        printf("\n10. Exit");
+        printf("\n10. Full Adder");
+        printf("\n11. Half Subtractor");
+        printf("\n12. Full Subtractor");
+        printf("\n13. 4-Bit Binary Adder");
+
+        printf("\n\n14. Exit");
 
         printf("\n\nEnter your choice: ");
         scanf("%d", &choice);
 
-        /* -------- LOGIC GATES -------- */
+
+        /* ========== LOGIC GATES ========== */
 
         if (choice >= 1 && choice <= 7)
         {
@@ -180,14 +356,16 @@ int main()
             }
         }
 
-        /* -------- TRUTH TABLES -------- */
+
+        /* ========== TRUTH TABLES ========== */
 
         else if (choice == 8)
         {
             displayTruthTables();
         }
 
-        /* -------- HALF ADDER -------- */
+
+        /* ========== HALF ADDER ========== */
 
         else if (choice == 9)
         {
@@ -200,17 +378,77 @@ int main()
             halfAdder(a, b);
         }
 
-        /* -------- EXIT -------- */
+
+        /* ========== FULL ADDER ========== */
 
         else if (choice == 10)
+        {
+            printf("\nEnter input A (0 or 1): ");
+            scanf("%d", &a);
+
+            printf("Enter input B (0 or 1): ");
+            scanf("%d", &b);
+
+            printf("Enter Carry In (0 or 1): ");
+            scanf("%d", &cin);
+
+            fullAdder(a, b, cin);
+        }
+
+
+        /* ========== HALF SUBTRACTOR ========== */
+
+        else if (choice == 11)
+        {
+            printf("\nEnter input A (0 or 1): ");
+            scanf("%d", &a);
+
+            printf("Enter input B (0 or 1): ");
+            scanf("%d", &b);
+
+            halfSubtractor(a, b);
+        }
+
+
+        /* ========== FULL SUBTRACTOR ========== */
+
+        else if (choice == 12)
+        {
+            printf("\nEnter input A (0 or 1): ");
+            scanf("%d", &a);
+
+            printf("Enter input B (0 or 1): ");
+            scanf("%d", &b);
+
+            printf("Enter Borrow In (0 or 1): ");
+            scanf("%d", &bin);
+
+            fullSubtractor(a, b, bin);
+        }
+
+
+        /* ========== 4-BIT ADDER ========== */
+
+        else if (choice == 13)
+        {
+            fourBitAdder();
+        }
+
+
+        /* ========== EXIT ========== */
+
+        else if (choice == 14)
         {
             printf("\nThank you for using the Digital Logic Circuit Simulator!\n");
             break;
         }
 
+
+        /* ========== INVALID CHOICE ========== */
+
         else
         {
-            printf("\nInvalid choice! Please enter 1 to 10.\n");
+            printf("\nInvalid choice! Please enter 1 to 14.\n");
         }
     }
 
