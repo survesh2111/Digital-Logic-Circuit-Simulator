@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-/* Logic Gate Functions */
+/* ================= LOGIC GATE FUNCTIONS ================= */
 
 int AND(int a, int b)
 {
@@ -37,99 +37,78 @@ int XNOR(int a, int b)
     return !(a ^ b);
 }
 
-/* Display Truth Tables */
+/* ================= HALF ADDER ================= */
+
+void halfAdder(int a, int b)
+{
+    int sum, carry;
+
+    sum = a ^ b;
+    carry = a & b;
+
+    printf("\n--- HALF ADDER ---\n");
+    printf("A = %d\n", a);
+    printf("B = %d\n", b);
+    printf("Sum   = %d\n", sum);
+    printf("Carry = %d\n", carry);
+}
+
+/* ================= TRUTH TABLES ================= */
 
 void displayTruthTables()
 {
     int a, b;
 
-    printf("\n============================================\n");
-    printf("        DIGITAL LOGIC CIRCUIT SIMULATOR\n");
-    printf("============================================\n");
+    printf("\n========================================");
+    printf("\n          LOGIC GATE TRUTH TABLES");
+    printf("\n========================================\n");
 
-    printf("\nAND GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
-
-    for (a = 0; a <= 1; a++)
-    {
-        for (b = 0; b <= 1; b++)
-        {
-            printf("%d %d | %d\n", a, b, AND(a, b));
-        }
-    }
-
-    printf("\nOR GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
+    printf("\nA B | AND OR NAND NOR XOR XNOR\n");
+    printf("--------------------------------\n");
 
     for (a = 0; a <= 1; a++)
     {
         for (b = 0; b <= 1; b++)
         {
-            printf("%d %d | %d\n", a, b, OR(a, b));
+            printf("%d %d |  %d   %d    %d    %d   %d    %d\n",
+                   a, b,
+                   AND(a, b),
+                   OR(a, b),
+                   NAND(a, b),
+                   NOR(a, b),
+                   XOR(a, b),
+                   XNOR(a, b));
         }
     }
 
-    printf("\nNAND GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
+    printf("\nNOT Gate Truth Table\n");
+    printf("-------------------\n");
+    printf("A | NOT\n");
+    printf("--------\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        printf("%d |  %d\n", a, NOT(a));
+    }
+
+    printf("\nHalf Adder Truth Table\n");
+    printf("----------------------\n");
+    printf("A B | Sum Carry\n");
+    printf("----------------\n");
 
     for (a = 0; a <= 1; a++)
     {
         for (b = 0; b <= 1; b++)
         {
-            printf("%d %d | %d\n", a, b, NAND(a, b));
+            printf("%d %d |  %d    %d\n",
+                   a, b,
+                   XOR(a, b),
+                   AND(a, b));
         }
-    }
-
-    printf("\nNOR GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
-
-    for (a = 0; a <= 1; a++)
-    {
-        for (b = 0; b <= 1; b++)
-        {
-            printf("%d %d | %d\n", a, b, NOR(a, b));
-        }
-    }
-
-    printf("\nXOR GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
-
-    for (a = 0; a <= 1; a++)
-    {
-        for (b = 0; b <= 1; b++)
-        {
-            printf("%d %d | %d\n", a, b, XOR(a, b));
-        }
-    }
-
-    printf("\nXNOR GATE\n");
-    printf("A B | Y\n");
-    printf("----+--\n");
-
-    for (a = 0; a <= 1; a++)
-    {
-        for (b = 0; b <= 1; b++)
-        {
-            printf("%d %d | %d\n", a, b, XNOR(a, b));
-        }
-    }
-
-    printf("\nNOT GATE\n");
-    printf("A | Y\n");
-    printf("---+--\n");
-
-    for (a = 0; a <= 1; a++)
-    {
-        printf("%d | %d\n", a, NOT(a));
     }
 }
 
-/* Main Function */
+/* ================= MAIN PROGRAM ================= */
 
 int main()
 {
@@ -138,9 +117,9 @@ int main()
 
     while (1)
     {
-        printf("\n============================================\n");
-        printf("       DIGITAL LOGIC CIRCUIT SIMULATOR\n");
-        printf("============================================\n");
+        printf("\n\n========================================");
+        printf("\n       DIGITAL LOGIC CIRCUIT SIMULATOR");
+        printf("\n========================================");
 
         printf("\n1. AND Gate");
         printf("\n2. OR Gate");
@@ -150,14 +129,17 @@ int main()
         printf("\n6. XOR Gate");
         printf("\n7. XNOR Gate");
         printf("\n8. Display All Truth Tables");
-        printf("\n9. Exit");
+        printf("\n9. Half Adder");
+        printf("\n10. Exit");
 
         printf("\n\nEnter your choice: ");
         scanf("%d", &choice);
 
+        /* -------- LOGIC GATES -------- */
+
         if (choice >= 1 && choice <= 7)
         {
-            printf("Enter input A (0 or 1): ");
+            printf("\nEnter input A (0 or 1): ");
             scanf("%d", &a);
 
             if (choice != 3)
@@ -197,18 +179,38 @@ int main()
                     break;
             }
         }
+
+        /* -------- TRUTH TABLES -------- */
+
         else if (choice == 8)
         {
             displayTruthTables();
         }
+
+        /* -------- HALF ADDER -------- */
+
         else if (choice == 9)
         {
-            printf("\nThank you for using the simulator!\n");
+            printf("\nEnter input A (0 or 1): ");
+            scanf("%d", &a);
+
+            printf("Enter input B (0 or 1): ");
+            scanf("%d", &b);
+
+            halfAdder(a, b);
+        }
+
+        /* -------- EXIT -------- */
+
+        else if (choice == 10)
+        {
+            printf("\nThank you for using the Digital Logic Circuit Simulator!\n");
             break;
         }
+
         else
         {
-            printf("\nInvalid choice! Please enter 1-9.\n");
+            printf("\nInvalid choice! Please enter 1 to 10.\n");
         }
     }
 
