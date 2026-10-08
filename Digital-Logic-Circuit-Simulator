@@ -1,1 +1,216 @@
+#include <stdio.h>
 
+/* Logic Gate Functions */
+
+int AND(int a, int b)
+{
+    return a && b;
+}
+
+int OR(int a, int b)
+{
+    return a || b;
+}
+
+int NOT(int a)
+{
+    return !a;
+}
+
+int NAND(int a, int b)
+{
+    return !(a && b);
+}
+
+int NOR(int a, int b)
+{
+    return !(a || b);
+}
+
+int XOR(int a, int b)
+{
+    return a ^ b;
+}
+
+int XNOR(int a, int b)
+{
+    return !(a ^ b);
+}
+
+/* Display Truth Tables */
+
+void displayTruthTables()
+{
+    int a, b;
+
+    printf("\n============================================\n");
+    printf("        DIGITAL LOGIC CIRCUIT SIMULATOR\n");
+    printf("============================================\n");
+
+    printf("\nAND GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, AND(a, b));
+        }
+    }
+
+    printf("\nOR GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, OR(a, b));
+        }
+    }
+
+    printf("\nNAND GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, NAND(a, b));
+        }
+    }
+
+    printf("\nNOR GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, NOR(a, b));
+        }
+    }
+
+    printf("\nXOR GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, XOR(a, b));
+        }
+    }
+
+    printf("\nXNOR GATE\n");
+    printf("A B | Y\n");
+    printf("----+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        for (b = 0; b <= 1; b++)
+        {
+            printf("%d %d | %d\n", a, b, XNOR(a, b));
+        }
+    }
+
+    printf("\nNOT GATE\n");
+    printf("A | Y\n");
+    printf("---+--\n");
+
+    for (a = 0; a <= 1; a++)
+    {
+        printf("%d | %d\n", a, NOT(a));
+    }
+}
+
+/* Main Function */
+
+int main()
+{
+    int choice;
+    int a, b;
+
+    while (1)
+    {
+        printf("\n============================================\n");
+        printf("       DIGITAL LOGIC CIRCUIT SIMULATOR\n");
+        printf("============================================\n");
+
+        printf("\n1. AND Gate");
+        printf("\n2. OR Gate");
+        printf("\n3. NOT Gate");
+        printf("\n4. NAND Gate");
+        printf("\n5. NOR Gate");
+        printf("\n6. XOR Gate");
+        printf("\n7. XNOR Gate");
+        printf("\n8. Display All Truth Tables");
+        printf("\n9. Exit");
+
+        printf("\n\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice >= 1 && choice <= 7)
+        {
+            printf("Enter input A (0 or 1): ");
+            scanf("%d", &a);
+
+            if (choice != 3)
+            {
+                printf("Enter input B (0 or 1): ");
+                scanf("%d", &b);
+            }
+
+            switch (choice)
+            {
+                case 1:
+                    printf("AND Output = %d\n", AND(a, b));
+                    break;
+
+                case 2:
+                    printf("OR Output = %d\n", OR(a, b));
+                    break;
+
+                case 3:
+                    printf("NOT Output = %d\n", NOT(a));
+                    break;
+
+                case 4:
+                    printf("NAND Output = %d\n", NAND(a, b));
+                    break;
+
+                case 5:
+                    printf("NOR Output = %d\n", NOR(a, b));
+                    break;
+
+                case 6:
+                    printf("XOR Output = %d\n", XOR(a, b));
+                    break;
+
+                case 7:
+                    printf("XNOR Output = %d\n", XNOR(a, b));
+                    break;
+            }
+        }
+        else if (choice == 8)
+        {
+            displayTruthTables();
+        }
+        else if (choice == 9)
+        {
+            printf("\nThank you for using the simulator!\n");
+            break;
+        }
+        else
+        {
+            printf("\nInvalid choice! Please enter 1-9.\n");
+        }
+    }
+
+    return 0;
+}
